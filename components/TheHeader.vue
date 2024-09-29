@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    HiSmith News
+    Главные новости :: www.rbc.ru
   </header>
 </template>
 
