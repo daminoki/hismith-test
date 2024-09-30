@@ -1,9 +1,3 @@
-<script setup lang="ts">
-import type { News } from '@/types/news'
-
-defineProps<{ news: News }>()
-</script>
-
 <template>
   <v-card
     class="news-card"
@@ -27,6 +21,12 @@ defineProps<{ news: News }>()
     </v-card-text>
   </v-card>
 </template>
+
+<script setup lang="ts">
+import type { News } from '@/types/news'
+
+defineProps<{ news: News }>()
+</script>
 
 <style scoped lang="scss">
 @import '@/assets/styles/mixins.scss';
