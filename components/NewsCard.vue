@@ -9,7 +9,13 @@ defineProps<{ news: News }>()
     class="news-card"
     variant="outlined"
   >
-    <v-card-title>{{ news.title }}</v-card-title>
+    <v-card-title>
+      <NuxtLink
+        :to="`/news/${news.id}`"
+      >
+        {{ news.title }}
+      </NuxtLink>
+    </v-card-title>
     <v-card-text>{{ news.anons }}</v-card-text>
     <v-card-text>{{ news.date }}</v-card-text>
   </v-card>

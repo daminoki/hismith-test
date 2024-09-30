@@ -12,8 +12,8 @@ export default defineEventHandler(async (event) => {
   const xml = await response.text()
   const json = await parseStringPromise(xml)
 
-  const newsItems = json.rss.channel[0].item.map((newsItem: RssNews, index: number) => ({
-    id: index,
+  const newsItems = json.rss.channel[0].item.map((newsItem: RssNews) => ({
+    id: newsItem['rbc_news:news_id'][0],
     title: newsItem.title[0],
     description: newsItem.description[0],
     link: newsItem.link[0],
