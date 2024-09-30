@@ -18,4 +18,11 @@
 <script setup lang="ts">
 const route = useRoute()
 const { data: news } = await useFetch(`/api/news/${route.params.id}`)
+
+useHead({
+  title: `${news.value.title}`,
+  meta: [
+    { name: 'description', content: `${news.value.anons}` },
+  ],
+})
 </script>

@@ -1,5 +1,5 @@
 import { parseStringPromise } from 'xml2js'
-import type { RssNews } from '@/types/news'
+import type { RssNews, News } from '@/types/news'
 
 export default defineEventHandler(async (event) => {
   const rssUrl = process.env.NEWS_RSS_URL
@@ -19,17 +19,25 @@ export default defineEventHandler(async (event) => {
     link: newsItem.link[0],
     anons: newsItem['rbc_news:anons'][0],
     date: newsItem['rbc_news:date'][0],
+    timestamp: new Date(newsItem['rbc_news:newsDate_timestamp'][0]).getTime(),
   }))
 
-  const query = getQuery(event)
-  const page = Number(query.page) || 1
-  const limit = Number(query.limit) || 10
+  const queryParams = getQuery(event)
+  const page = Number(queryParams.page) || 1
+  const limit = Number(queryParams.limit) || 5
+  const query = String(queryParams.query || '').toLowerCase()
+
+  const sortedNewsItems = newsItems.sort((a: News, b: News) => b.timestamp - a.timestamp)
+
+  const filteredNewsItems = sortedNewsItems.filter((newsItem: RssNews) =>
+    newsItem.title.toLowerCase().trim().includes(query),
+  )
 
   const startIndex = (page - 1) * limit
-  const paginatedNews = newsItems.slice(startIndex, startIndex + limit)
+  const paginatedNews = filteredNewsItems.slice(startIndex, startIndex + limit)
 
   return {
-    total: newsItems.length,
+    total: filteredNewsItems.length,
     news: paginatedNews,
   }
 })

@@ -1,5 +1,19 @@
 @mixin h1 {
   font-size: 2em;
   font-weight: bold;
-  color: #333;
+  color: #1b1b1b;
+  margin: 0;
+}
+
+@mixin h3 {
+  font-size: 1em;
+  font-weight: bold;
+  color: #1b1b1b;
+  margin: 0;
+}
+
+@mixin p {
+  font-size: 1em;
+  color: #1b1b1b;
+  margin: 0;
 }
