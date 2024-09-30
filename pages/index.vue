@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { debounce } from 'lodash'
+import pkg from 'lodash'
 import type { News, NewsResponse } from '@/types/news'
 
 const currentPage = ref(1)
@@ -74,6 +74,7 @@ const totalNews = ref(0)
 const news = ref<News[]>([])
 const query = ref('')
 const isLoading = ref(false)
+const { debounce } = pkg
 
 const debouncedFetchNews = debounce(() => {
   currentPage.value = 1
