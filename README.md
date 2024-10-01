@@ -12,7 +12,7 @@ npm run dev
 
 ## Additional information
 * Node version: Node.js 20
-* Environment Variable: Create .ens file and set the NEWS_RSS_URL environment variable to the following URL:
+* Environment Variable: Create .env file and set the NEWS_RSS_URL environment variable to the following URL:
 ```
 NEWS_RSS_URL=http://static.feed.rbc.ru/rbc/logical/footer/news.rss
 ```
