@@ -1,5 +1,7 @@
 # Test task for HiSmith company
 
+![Снимок экрана 2024-10-01 в 14 45 53](https://github.com/user-attachments/assets/127d5bc7-5d8e-45f6-a33b-a6fd00294754)
+
 ## Description
 This project is a news feed application that displays articles from the RBC RSS feed. It provides a user-friendly interface for browsing the latest news, filtering by date and keywords, and accessing detailed information about each article.
 
