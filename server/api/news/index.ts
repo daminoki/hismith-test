@@ -1,5 +1,6 @@
 import { parseStringPromise } from 'xml2js'
 import type { RssNews, News } from '@/types/news'
+import { parseDate } from '@/utils/formatDate'
 
 export default defineEventHandler(async (event) => {
   const rssUrl = process.env.NEWS_RSS_URL
@@ -32,11 +33,6 @@ export default defineEventHandler(async (event) => {
   const limit = Number(queryParams.limit) || 5
   const query = String(queryParams.query || '').toLowerCase()
 
-  const parseDate = (dateString: string) => {
-    const [day, month, year] = dateString.split('.')
-    return new Date(`${year}-${month}-${day}`)
-  }
-
   const startDate = queryParams.startDate as string
 
   const endDate = queryParams.endDate as string
@@ -44,8 +40,6 @@ export default defineEventHandler(async (event) => {
   const sortedNewsItems = newsItems.sort((a: News, b: News) => b.timestamp - a.timestamp)
 
   const filteredNewsItems = sortedNewsItems.filter((newsItem: News) => {
-    console.log(newsItem.date, startDate, endDate)
-
     const isWithinDateRange = (() => {
       if (!startDate || !endDate) return true
       const newsDate = parseDate(newsItem.date)

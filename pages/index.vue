@@ -38,20 +38,37 @@
       </div>
     </div>
 
-    <div
-      v-if="news.length && !isLoading"
-      class="list"
-    >
-      <NewsCard
-        v-for="item in news"
-        :key="item.id"
-        :news="item"
-      />
-    </div>
+    <div v-if="!isLoading">
+      <div
+        v-if="news.length"
+        class="list"
+      >
+        <NewsCard
+          v-for="item in news"
+          :key="item.id"
+          :news="item"
+        />
+      </div>
 
-    <p v-if="!news.length && !isLoading">
-      По данным параметрам запроса ничего не найдено
-    </p>
+      <p v-if="!news.length">
+        По данным параметрам запроса ничего не найдено
+      </p>
+
+      <div
+        v-if="news.length"
+        class="pagination"
+      >
+        <v-pagination
+          v-model="currentPage"
+          :length="totalPages"
+          prev-icon="mdi-chevron-left"
+          next-icon="mdi-chevron-right"
+          variant="elevated"
+          color="#06266f20"
+          @update:model-value="currentPage = $event"
+        />
+      </div>
+    </div>
 
     <div
       v-if="isLoading"
@@ -62,27 +79,13 @@
         indeterminate
       />
     </div>
-
-    <div
-      v-if="news.length && !isLoading"
-      class="pagination"
-    >
-      <v-pagination
-        v-model="currentPage"
-        :length="totalPages"
-        prev-icon="mdi-chevron-left"
-        next-icon="mdi-chevron-right"
-        variant="elevated"
-        color="#06266f20"
-        @update:model-value="currentPage = $event"
-      />
-    </div>
   </v-container>
 </template>
 
 <script setup lang="ts">
 import debounce from 'lodash/debounce'
 import type { News, NewsResponse } from '@/types/news'
+import { formatDate } from '@/utils/formatDate'
 
 const currentPage = ref(1)
 const limit = 5
@@ -96,6 +99,7 @@ const totalPages = computed(() => Math.ceil(totalNews.value / limit))
 
 const debouncedFetchNews = debounce(() => {
   currentPage.value = 1
+
   fetchNews()
 }, 300)
 
@@ -103,18 +107,10 @@ const fetchNews = async () => {
   isLoading.value = true
 
   const startDate = dateRange.value?.length
-    ? new Date(dateRange.value[0]).toLocaleDateString('ru-RU', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    })
+    ? formatDate(new Date(dateRange.value[0]))
     : ''
   const endDate = dateRange.value?.length
-    ? new Date(dateRange.value[dateRange.value.length - 1]).toLocaleDateString('ru-RU', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    })
+    ? formatDate(new Date(dateRange.value[dateRange.value.length - 1]))
     : ''
 
   const { data } = await useFetch<NewsResponse>(
