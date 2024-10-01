@@ -17,3 +17,9 @@
   color: #1b1b1b;
   margin: 0;
 }
+
+@mixin xs {
+  @media (max-width: 768px) {
+    @content;
+  }
+}

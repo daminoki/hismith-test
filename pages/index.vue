@@ -17,7 +17,23 @@
           append-inner-icon="mdi-magnify"
           persistent-hint
           @input="debouncedFetchNews"
-          @click:clear="handleClear"
+          @click:clear="handleSearchClear"
+        />
+      </div>
+
+      <div class="date-filter">
+        <v-date-input
+          v-model="dateRange"
+          label="Выберите дату"
+          multiple="range"
+          variant="solo"
+          density="compact"
+          placeholder="дд.мм.гггг"
+          cancel-text="Отмена"
+          ok-text="Применить"
+          clearable
+          @update:model-value="debouncedFetchNews"
+          @click:clear="handleDateClear"
         />
       </div>
     </div>
@@ -73,7 +89,10 @@ const limit = 5
 const totalNews = ref(0)
 const news = ref<News[]>([])
 const query = ref('')
+const dateRange = ref([])
 const isLoading = ref(false)
+
+const totalPages = computed(() => Math.ceil(totalNews.value / limit))
 
 const debouncedFetchNews = debounce(() => {
   currentPage.value = 1
@@ -82,23 +101,43 @@ const debouncedFetchNews = debounce(() => {
 
 const fetchNews = async () => {
   isLoading.value = true
+
+  const startDate = dateRange.value?.length
+    ? new Date(dateRange.value[0]).toLocaleDateString('ru-RU', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    })
+    : ''
+  const endDate = dateRange.value?.length
+    ? new Date(dateRange.value[dateRange.value.length - 1]).toLocaleDateString('ru-RU', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    })
+    : ''
+
   const { data } = await useFetch<NewsResponse>(
-    `/api/news?page=${currentPage.value}&limit=${limit}&query=${query.value}`,
+    `/api/news?page=${currentPage.value}&limit=${limit}&query=${query.value}&startDate=${startDate}&endDate=${endDate}`,
   )
+
   isLoading.value = false
 
   news.value = data.value?.news || []
   totalNews.value = data.value?.total || 0
 }
 
-const handleClear = () => {
+const handleSearchClear = () => {
   query.value = ''
   debouncedFetchNews()
 }
 
-fetchNews()
+const handleDateClear = () => {
+  dateRange.value = []
+  debouncedFetchNews()
+}
 
-const totalPages = computed(() => Math.ceil(totalNews.value / limit))
+fetchNews()
 
 watch(currentPage, fetchNews)
 </script>
@@ -117,12 +156,21 @@ watch(currentPage, fetchNews)
 }
 
 .filters {
+  @include xs {
+    flex-direction: column;
+  }
+
   display: flex;
   gap: 20px;
   margin: 20px 0;
 }
 
 .search-filter {
+  max-width: 400px;
+  width: 100%;
+}
+
+.date-filter {
   max-width: 400px;
   width: 100%;
 }
