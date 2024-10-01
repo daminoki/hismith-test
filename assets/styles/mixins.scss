@@ -3,6 +3,7 @@
   font-weight: bold;
   color: #1b1b1b;
   margin: 0;
+  line-height: normal;
 }
 
 @mixin h3 {
@@ -10,12 +11,27 @@
   font-weight: bold;
   color: #1b1b1b;
   margin: 0;
+  line-height: normal;
 }
 
 @mixin p {
   font-size: 1em;
   color: #1b1b1b;
   margin: 0;
+  line-height: normal;
+}
+
+@mixin link {
+  font-size: 1em;
+  margin: 0;
+  line-height: normal;
+  color: #1b1b1b;
+  text-decoration: underline;
+  transition: color .2s ease-in-out;
+
+  &:hover {
+      color: #ff7a00;
+  }
 }
 
 @mixin xs {

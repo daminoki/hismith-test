@@ -146,7 +146,13 @@ watch(currentPage, fetchNews)
 @import '@/assets/styles/mixins.scss';
 
 .title {
-@include h1;
+  @include h1;
+
+  @include xs {
+    margin: 40px 0;
+  }
+
+  margin: 60px 0;
 }
 
 .list {
@@ -158,6 +164,7 @@ watch(currentPage, fetchNews)
 .filters {
   @include xs {
     flex-direction: column;
+    gap: 10px;
   }
 
   display: flex;

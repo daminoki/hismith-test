@@ -5,9 +5,11 @@ export interface News {
   link: string
   anons: string
   date: string
+  time: string
   pubDate: string
   images: string[]
   timestamp: number
+  author?: string
 }
 
 export interface RssNews {
@@ -17,10 +19,12 @@ export interface RssNews {
   'link': string
   'rbc_news:anons': string
   'rbc_news:date': string
+  'rbc_news:time': string
   'pubDate': string
   'date': string
   'rbc_news:image'?: RbcNewsImage[]
   'rbc_news:newsDate_timestamp': string
+  'author'?: string
 }
 
 export interface NewsResponse {

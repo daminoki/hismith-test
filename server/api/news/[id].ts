@@ -19,8 +19,10 @@ export default defineEventHandler(async (event) => {
     link: newsItem.link[0],
     anons: newsItem['rbc_news:anons'][0],
     date: newsItem['rbc_news:date'][0],
+    time: newsItem['rbc_news:time'][0],
     pubDate: newsItem.pubDate[0],
     images: newsItem['rbc_news:image']?.map(image => image['rbc_news:url'][0]) || [],
+    author: newsItem.author?.[0],
   }))
 
   const id = getRouterParam(event, 'id')
